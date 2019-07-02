@@ -6,6 +6,7 @@ import com.ioc.authorize.exceptions.AuthorizeUserException;
 import com.ioc.authorize.model.user.User;
 import com.ioc.authorize.service.user.IUserService;
 import com.ioc.authorize.utils.LogUtil;
+import com.ioc.authorize.utils.UuidUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.ioc.authorize.constant.BaseConstant.NO_DEL_FLAG;
 
 /**
  * 用户接口实现类
@@ -72,11 +75,21 @@ public class UserServiceImpl implements IUserService {
      * @throws Exception
      */
     @Override
-    public int setUser(User user) throws Exception {
+    public int addUser(User user) throws Exception {
+        int result = 0;
+        user.setId( UuidUtil.getUuid() );
+        user.setDelFlag(NO_DEL_FLAG);
+
         Date today = new Date();
         user.setCreateTime(today);
         user.setUpdateTime(today);
-       return null == user ? 0 : userDao.insert(user);
+        try {
+            result = userDao.insert(user);
+        } catch (Exception e) {
+            LogUtil.error(LOG, e, "用户添加失败");
+            throw new AuthorizeUserException( "用户添加失败" );
+        }
+        return result;
     }
 
     /**
@@ -87,6 +100,14 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public List<User> getAllByUser(User user) throws Exception {
-        return null == user ? null : userDao.getAllByUser(user);
+        List<User> list;
+
+        try {
+            list = userDao.getAllByUser( user );
+        } catch (Exception e) {
+            LogUtil.error(LOG, e, "用户查询失败");
+            throw new AuthorizeUserException( "用户查询失败" );
+        }
+        return list;
     }
 }

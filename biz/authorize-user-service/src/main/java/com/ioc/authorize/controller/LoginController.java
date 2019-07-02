@@ -85,8 +85,7 @@ public class LoginController {
             if (null != userByUserNo){
                 returnVo = new ReturnVo(ERROR, "登录名已经存在");
             }
-            user.setDelFlag(NO_DEL_FLAG);
-            userService.setUser(user);
+            userService.addUser(user);
             returnVo = new ReturnVo(ERROR, "注册成功");
         } catch (Exception e) {
             LogUtil.error(LOG, e, "注册失败，userNo:{0}", user.getUserNo());

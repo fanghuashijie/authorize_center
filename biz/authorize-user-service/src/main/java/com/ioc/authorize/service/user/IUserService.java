@@ -31,7 +31,7 @@ public interface IUserService {
      * @param user 用户
      * @throws Exception
      */
-    public int setUser(User user) throws Exception;
+    public int addUser(User user) throws Exception;
 
     /**
      * 按条件筛选出用户列表

@@ -2,8 +2,8 @@
 <configuration  scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>logback</contextName>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <springProperty scope="context" name="logLevel" source="log.level"/>
-    <springProperty scope="context" name="logPath" source="log.path"/>
+    <springProperty scope="context" name="logLevel" source="logging.level"/>
+    <springProperty scope="context" name="logPath" source="logging.path"/>
     <!--<property name="log.path" value="" />-->
     <!--输出到控制台-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -17,7 +17,7 @@
 
     <!--输出到文件-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logPath}/springBootDemo.log</file>
+        <file>${logPath}/authorize_center.log</file>
         <!--日志文件输出的文件名-->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${logPath}/back/%d{yyyy-MM-dd}/logback.%d{yyyy-MM-dd}_%i.log</fileNamePattern>

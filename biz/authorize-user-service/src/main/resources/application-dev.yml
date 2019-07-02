@@ -7,11 +7,12 @@ server:
     # 默认200
     max-connections: 800
 
+#FIXME 打印两种日志
 # 日志
 logging:
   level:
     root: info
-  path: d://logs/springBootDemo/
+  path: d://logs/authorize_center/
 
 #数据库配置
 spring:
