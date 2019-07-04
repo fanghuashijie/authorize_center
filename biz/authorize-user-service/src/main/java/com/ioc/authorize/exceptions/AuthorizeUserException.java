@@ -19,7 +19,7 @@ public class AuthorizeUserException extends RuntimeException {
         this.errMsg = errMsg;
     }
 
-    public AuthorizeUserException( String errCode, String errMsg, Throwable cause) {
+    public AuthorizeUserException(String errCode, String errMsg, Throwable cause) {
         super( errCode + " : " + errMsg, cause );
         this.errCode = errCode;
         this.errMsg = errMsg;

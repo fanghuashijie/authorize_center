@@ -29,7 +29,7 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-    private final Logger logger =  Logger.getLogger( RedisConfig.class);
+    private final Logger LOG =  Logger.getLogger( RedisConfig.class);
 
 
     /**

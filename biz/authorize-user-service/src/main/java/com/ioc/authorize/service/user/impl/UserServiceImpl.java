@@ -58,10 +58,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserByUserNo(String userNo) throws Exception {
         User user = null;
+
+        if (StringUtils.isBlank( userNo )){
+            return null;
+        }
         try {
-            if ( StringUtils.isNotBlank( userNo ) ){
-                user = userDao.getUserByUserNo( userNo );
-            }
+            user.setDelFlag(NO_DEL_FLAG);
+            user = userDao.getUserByUserNo( userNo );
         } catch (Exception e) {
             LogUtil.error(LOG, e, "用户查询失败");
             throw new AuthorizeUserException( "用户查询失败" );

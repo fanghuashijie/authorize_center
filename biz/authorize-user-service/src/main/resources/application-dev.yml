@@ -88,3 +88,7 @@ mybatis:
 #  config-location: classpath:mybatis-config.xml
   check-config-location: true
 
+# swagger
+swagger:
+  enable: true
+

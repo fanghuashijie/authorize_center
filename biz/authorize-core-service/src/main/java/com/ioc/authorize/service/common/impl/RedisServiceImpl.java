@@ -2,6 +2,7 @@ package com.ioc.authorize.service.common.impl;
 
 
 import com.ioc.authorize.service.common.IRedisService;
+import com.ioc.authorize.utils.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
-@Service
-public class IRedisServiceImpl implements IRedisService {
+import java.util.concurrent.TimeUnit;
 
-    private Logger logger =  Logger.getLogger( IRedisServiceImpl.class);
+@Service
+public class RedisServiceImpl implements IRedisService {
+
+    private Logger LOG =  Logger.getLogger( RedisServiceImpl.class);
 
     // 在构造器中获取redisTemplate实例, key(not hashKey) 默认使用String类型
     private RedisTemplate<String, Object> redisTemplate;
@@ -25,7 +28,7 @@ public class IRedisServiceImpl implements IRedisService {
     private ValueOperations<String, Object> valueOperations;
 
     @Autowired
-    public IRedisServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+    public RedisServiceImpl(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.hashOperations = redisTemplate.opsForHash();
         this.listOperations = redisTemplate.opsForList();
@@ -36,14 +39,14 @@ public class IRedisServiceImpl implements IRedisService {
 
 
     /**
-     * 设置redis缓存
+     * 设置redis缓存（字符串类型）
      * @param key
      * @param value
      * @param <T>
      * @return
      */
     @Override
-    public <T> Boolean set(String key, T value) {
+    public <T> Boolean setString(String key, T value) {
         if (StringUtils.isNotBlank(key)) {
             valueOperations.set(key, value);
             return true;
@@ -52,23 +55,46 @@ public class IRedisServiceImpl implements IRedisService {
     }
 
     /**
+     * 设置有效时间的redis缓存（字符串类型）
+     * @param key
+     * @param value
+     * @param expireSeconds y有效时间，秒
+     * @param <T>
+     * @return
+     */
+    @Override
+    public <T> Boolean setString(String key, T value, long expireSeconds) {
+        if (StringUtils.isNotBlank(key)) {
+
+            if (expireSeconds > 0) {
+                valueOperations.set(key, value, expireSeconds, TimeUnit.SECONDS);
+            } else {
+                valueOperations.set(key, value);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * 获取redis缓存
      * @param key
      * @return
      */
     @Override
-    public Object get(String key) {
-        Object value = null;
+    public <T> T get(String key) {
+        T value = null;
         DataType dataType = getDataType(key);
         switch (dataType) {
             case LIST:
-                value = listOperations.rightPop(key);
+                value = (T)listOperations.rightPop(key);
                 break;
             case HASH:
-                value = hashOperations.entries(key);
+                value = (T)hashOperations.entries(key);
                 break;
             case STRING:
-                value = valueOperations.get(key);
+                value = (T)valueOperations.get(key);
                 break;
             default:
                 break;
@@ -76,17 +102,17 @@ public class IRedisServiceImpl implements IRedisService {
         return value;
     }
 
-    /**
-     * 获取redis缓存
-     * @param key
-     * @param tClazz
-     * @param <T>
-     * @return
-     */
-    @Override
-    public <T> T get(String key, Class<T> tClazz) {
-        return (T)get(key);
-    }
+//    /**
+//     * 获取redis缓存
+//     * @param key
+//     * @param tClazz
+//     * @param <T>
+//     * @return
+//     */
+//    @Override
+//    public <T> T get(String key, Class<T> tClazz) {
+//        return get(key);
+//    }
 
     /**
      * 获取对应的key在redis中的存取类型
@@ -100,5 +126,15 @@ public class IRedisServiceImpl implements IRedisService {
             dataType = redisTemplate.type(key);
         }
         return dataType;
+    }
+
+    /**
+     * redis清除
+     * @param key
+     */
+    public void delete(String key){
+        if (StringUtils.isNotBlank( key )){
+            redisTemplate.delete( key );
+        }
     }
 }

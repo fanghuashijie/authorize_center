@@ -19,9 +19,9 @@ import java.util.UUID;
  *    Ctoken格式：由字母或数字组成的36位字符串。(32位UUID + 4位校验位)
  *    4位校验位生成规则:
  *              第1位校验位：  (HashCode(SubStr(UUID, 0,8))+ int(clientIp))%16 的16进制结果
- *              第2位校验位：  (HashCode(SubStr(UUID, 8,8))+ int(clientIp))%16 的16进制结果
- *              第2位校验位：  (HashCode(SubStr(UUID,16,8))+ int(clientIp))%16 的16进制结果
- *              第2位校验位：  (HashCode(SubStr(UUID,24,8))+ int(clientIp))%16 的16进制结果
+ *              第2位校验位：  (HashCode(SubStr(UUID, 8,16))+ int(clientIp))%16 的16进制结果
+ *              第2位校验位：  (HashCode(SubStr(UUID,16,24))+ int(clientIp))%16 的16进制结果
+ *              第2位校验位：  (HashCode(SubStr(UUID,24,32))+ int(clientIp))%16 的16进制结果
  *
  */
 public class CtokenUtil {
@@ -43,11 +43,10 @@ public class CtokenUtil {
      * @return
      */
     public static String sendCtoken(HttpServletRequest request, HttpServletResponse response) {
-        /*
+        /**
          * Step1:创建Ctoken.
          */
-        String uuid = UUID.randomUUID().toString();
-        uuid = uuid.toUpperCase().replace("-", "");
+        String uuid = UuidUtil.getUuid().toUpperCase();
         int ipHashCode = HttpRequestUtil.getRemoteIp(request).hashCode();
         StringBuffer str = new StringBuffer(uuid);
         String validateChar = null;
@@ -59,22 +58,22 @@ public class CtokenUtil {
 
         String ctoken = str.toString().toUpperCase();
 
-
-        sendCtoken(request,response,ctoken);
+        /**
+         * Step2: 写入客户端
+         */
+        sendCtoken(response,ctoken);
         return ctoken;
     }
 
 
     /**
-     * 创建一个Ctoken .
-     * @param request
+     * 写入客户端
      * @param response
+     * @param ctoken
      * @return
      */
-    public static void sendCtoken(HttpServletRequest request, HttpServletResponse response, String ctoken) {
-        /*
-         * 将Ctoken写入客户端Cookie.
-         */
+    public static void sendCtoken(HttpServletResponse response, String ctoken) {
+        // 将Ctoken写入客户端Cookie.
         Cookie cookie = new Cookie(CTOKEN_COOKIE_NAME, ctoken);
         cookie.setPath("/");
 //        cookie.setMaxAge(3600);  // 单位秒
@@ -137,7 +136,7 @@ public class CtokenUtil {
         }
 
         ctoken = request.getParameter(CTOKEN_COOKIE_NAME);
-        if(ctoken!=null)
+        if(StringUtils.isNotBlank( ctoken ))
         {
             //注从HTTP请求参数中获取Ctoken，主要是为了方便模拟压测，正常业务逻辑部分进入该流程.
             LogUtil.info(LOG,"从HTTP请求参数中获取Ctoken:{0}",ctoken);

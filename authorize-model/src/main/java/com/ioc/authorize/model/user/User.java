@@ -2,6 +2,7 @@ package com.ioc.authorize.model.user;
 
 
 import com.ioc.authorize.model.common.BaseModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -10,26 +11,31 @@ public class User extends BaseModel implements Serializable {
     /**
      * 用户ID
      */
+    @ApiModelProperty(value = "id", example = "用户ID")
     private String id;
 
     /**
      * 用户编号
      */
+    @ApiModelProperty(value = "userNo", example = "用户编号")
     private String userNo;
 
     /**
      * 用户昵称
      */
+    @ApiModelProperty(value = "nickName", example = "用户昵称")
     private String nickName;
 
     /**
      * 登录密码
      */
+    @ApiModelProperty(value = "password", example = "登录密码")
     private String password;
 
     /**
      * 用户真实名
      */
+    @ApiModelProperty(value = "realName", example = "用户真实名")
     private String realName;
 
 
