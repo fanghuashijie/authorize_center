@@ -6,6 +6,8 @@ server:
     uri-encoding: UTF-8
     # 默认200
     max-connections: 800
+  servlet:
+    context-path: /oauth
 
 #FIXME 打印两种日志
 # 日志

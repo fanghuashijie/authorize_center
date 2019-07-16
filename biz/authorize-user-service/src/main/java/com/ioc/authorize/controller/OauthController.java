@@ -12,10 +12,7 @@ import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +22,7 @@ import static com.ioc.authorize.constant.BaseConstant.*;
 
 
 @RestController
-@RequestMapping("/authorize/")
+@RequestMapping("/")
 @Api(tags = "授权接口", description = "授权接口说明", hidden = true)
 public class OauthController {
 
@@ -49,8 +46,9 @@ public class OauthController {
 //            @ApiImplicitParam(name="month",value="年月，格式为：201801",dataType="String", paramType = "query"),
     })
 //    @ApiResponse( response = ReturnVo.class, code = 1, message = "接口返回对象参数")
-    public ReturnVo doLogin(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response, User user) {
+    public ReturnVo doLogin(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response,@RequestBody User user) {
         ReturnVo returnVo = new ReturnVo( ERROR, "登录失败！" );
+
         try {
 
             String password = user.getPassword();
@@ -120,7 +118,7 @@ public class OauthController {
 //            @ApiImplicitParam(name="month",value="年月，格式为：201801",dataType="String", paramType = "query"),
     })
 //    @ApiResponse( response=Person.class, code = 1, message = "接口返回对象参数")
-    public ReturnVo doRegister(User user) {
+    public ReturnVo doRegister(@RequestBody User user) {
         ReturnVo returnVo = new ReturnVo( ERROR, "注册失败！" );
         try {
             //查询注册的登录ID是否已经存在
@@ -129,7 +127,7 @@ public class OauthController {
                 returnVo = new ReturnVo( ERROR, "登录名已经存在" );
             }
             userService.addUser( user );
-            returnVo = new ReturnVo( ERROR, "注册成功" );
+            returnVo = new ReturnVo( SUCCESS, "注册成功" );
         } catch (Exception e) {
             LogUtil.error( LOG, e, "注册失败，userNo:{0}", user.getUserNo() );
         }

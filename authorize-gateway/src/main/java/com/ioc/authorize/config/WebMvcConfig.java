@@ -26,6 +26,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         /**
          * Ctoken验证验证(未起作用)
          */
-        registry.addInterceptor(new CtokenInterceptor() );
+//        registry.addInterceptor(new CtokenInterceptor() );
     }
 }

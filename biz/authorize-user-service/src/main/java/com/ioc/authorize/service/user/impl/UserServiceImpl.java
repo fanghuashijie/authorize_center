@@ -57,19 +57,20 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public User getUserByUserNo(String userNo) throws Exception {
-        User user = null;
 
         if (StringUtils.isBlank( userNo )){
             return null;
         }
         try {
-            user.setDelFlag(NO_DEL_FLAG);
-            user = userDao.getUserByUserNo( userNo );
+//            User user = new User();
+//            user.setDelFlag(NO_DEL_FLAG);
+            User user = userDao.getUserByUserNo( userNo );
+
+            return user;
         } catch (Exception e) {
             LogUtil.error(LOG, e, "用户查询失败");
             throw new AuthorizeUserException( "用户查询失败" );
         }
-        return user;
     }
 
     /**
@@ -84,7 +85,9 @@ public class UserServiceImpl implements IUserService {
         user.setDelFlag(NO_DEL_FLAG);
 
         Date today = new Date();
+        user.setCreator( user.getUserNo() );
         user.setCreateTime(today);
+        user.setUpdator( user.getUserNo() );
         user.setUpdateTime(today);
         try {
             result = userDao.insert(user);
