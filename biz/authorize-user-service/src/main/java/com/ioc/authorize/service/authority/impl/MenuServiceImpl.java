@@ -8,10 +8,10 @@ import com.ioc.authorize.service.authority.IMenuService;
 import com.ioc.authorize.service.common.IRedisService;
 import com.ioc.authorize.utils.LogUtil;
 import com.ioc.authorize.utils.RedisUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class MenuServiceImpl implements IMenuService {
             menuList = (List<Menu>)redisService.get( RedisUtil.formatRedisKey( RedisEnum.MENU, redis_menu ) );
 
             // 从数据库中获取菜单列表
-            if ( null == menuList || menuList.size() ==0 ){
+            if ( CollectionUtils.isEmpty(menuList) ){
                 menuList = menuDao.getAll(menu);
                 if ( null == menuList || menuList.size() ==0 ) {
                     LogUtil.info( LOG, "菜单为空" );
@@ -146,7 +146,7 @@ public class MenuServiceImpl implements IMenuService {
             subMenu.setPid( menu.getId() );
             subMenu.setDelFlag( NO_DEL_FLAG );
             List<Menu> menuList = menuDao.getAll(subMenu);
-            if (null != menuList && menuList.size() > 0) {
+            if ( CollectionUtils.isEmpty( menuList ) ) {
                 LogUtil.error(LOG, "有子菜单不能进行删除");
                 throw new ArithmeticException( "有子菜单不能进行删除" );
             }

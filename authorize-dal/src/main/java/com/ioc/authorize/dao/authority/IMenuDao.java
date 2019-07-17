@@ -3,9 +3,11 @@ package com.ioc.authorize.dao.authority;
 
 import com.ioc.authorize.model.authority.Menu;
 import com.ioc.authorize.model.user.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IMenuDao {
 
     /**

@@ -26,7 +26,7 @@ import static com.ioc.authorize.constant.BaseConstant.*;
 @RequestMapping("/demo/authority/menu")
 public class MenuController {
 
-    private Logger LOG =  Logger.getLogger(MenuController.class);
+    private Logger LOG =  Logger.getLogger(getClass());
 
     @Autowired
     private IRedisService redisService;
