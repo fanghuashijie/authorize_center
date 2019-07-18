@@ -71,7 +71,15 @@ public interface IMenuDao {
 
     /**
      * 查询所有菜单
+     * @param menu
      * @return
      */
     List<Menu> getAll(Menu menu);
+
+    /**
+     * 根据pids查询菜单
+     * @param pids 例如：1，2，3
+     * @return
+     */
+    List<Menu> getMenuByPids(@Param( "pids" ) String pids);
 }

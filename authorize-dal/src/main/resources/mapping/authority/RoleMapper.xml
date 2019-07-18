@@ -32,9 +32,51 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="getAll" parameterType="com.ioc.authorize.model.authority.Role" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_role
+    <where>
+      <if test="roleCode != null">
+        and role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="authorize != null">
+        and authorize = #{authorize,jdbcType=CHAR}
+      </if>
+      <if test="creator != null">
+        and creator = #{creator,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updator != null">
+        and updator = #{updator,jdbcType=VARCHAR}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tbl_role
     where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    delete from tbl_role
+    <where>
+      id IN
+      <foreach collection="ids.split(',')" item="id" separator="," open="(" close=")">
+        #{id,jdbcType=VARCHAR}
+      </foreach>
+    </where>
   </delete>
 
   <insert id="insert" parameterType="com.ioc.authorize.model.authority.Role">

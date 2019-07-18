@@ -216,6 +216,13 @@ public class MenuServiceImpl implements IMenuService {
         }
 
         try {
+            // 判断是否有子菜单
+            List<Menu> menuByPids = menuDao.getMenuByPids( ids );
+
+            if (CollectionUtils.isNotEmpty( menuByPids )){
+                throw new AuthorizeUserException( "有子菜单！" );
+            }
+
             menuDao.deleteByIds( ids );
         } catch (Exception e) {
             LogUtil.error(LOG, e, "数据库删除菜单失败，ids:{0}" , ids);

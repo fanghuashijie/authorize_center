@@ -113,7 +113,7 @@ public class MenuController {
     }
 
     @PutMapping("/removeMenu/{ids}")
-    @ApiOperation(value = "菜单添加", notes = "菜单添加接口")
+    @ApiOperation(value = "菜单删除", notes = "菜单删除接口")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name="month",value="年月，格式为：201801",dataType="String", paramType = "query"),
     })
