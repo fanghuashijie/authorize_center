@@ -2,6 +2,7 @@ package com.ioc.authorize.service.authority;
 
 import com.ioc.authorize.model.authority.Menu;
 import com.ioc.authorize.model.user.User;
+import com.ioc.authorize.vo.menu.MenuTreeVo;
 
 import java.util.List;
 
@@ -23,14 +24,14 @@ public interface IMenuService {
      * @return
      * @throws Exception
      */
-    List<Menu> getAll(Menu menu) throws Exception;
+    List<MenuTreeVo> getAll(Menu menu) throws Exception;
 
     /**
      * 添加菜单
      * @param menu
      * @throws Exception
      */
-    void add(Menu menu, User user) throws Exception;
+    void addMenu(Menu menu, User user) throws Exception;
 
     /**
      * 删除菜单
@@ -38,4 +39,11 @@ public interface IMenuService {
      * @throws Exception
      */
     void del(Menu menu) throws Exception;
+
+    /**
+     * 根据ids批量删除
+     * @param ids 例如：1，2，3，4
+     * @throws Exception
+     */
+    void removeMenu(String ids) throws Exception;
 }

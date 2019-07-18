@@ -5,11 +5,11 @@ package com.ioc.authorize.constant;
  */
 public abstract class BaseConstant {
 
-    // 成功
-    public static final Integer SUCCESS = 1;
+    // 不是叶子节点
+    public final static Integer MENU_NOT_LEAF = 0;
 
-    // 失败
-    public static final Integer ERROR = 0;
+    // 是叶子节点
+    public final static Integer MENU_IS_LEAF = 1;
 
     // 删除标识（已删除）
     public static final Integer DEL_FLAG = 0;

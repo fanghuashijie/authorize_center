@@ -111,23 +111,4 @@ public class Menu extends BaseModel implements Serializable {
         this.isLeaf = isLeaf;
     }
 
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", sn='" + sn + '\'' +
-                ", url='" + url + '\'' +
-                ", pid='" + pid + '\'' +
-                ", seq=" + seq +
-                ", status=" + status +
-                ", isLeaf=" + isLeaf +
-                ", creator='" + super.getCreator() + '\'' +
-                ", createTime=" + super.getCreateTime() +
-                ", updator='" + super.getUpdator() + '\'' +
-                ", updateTime=" + super.getUpdateTime() +
-                ", delFlag=" + super.getDelFlag() +
-                '}';
-    }
-
 }

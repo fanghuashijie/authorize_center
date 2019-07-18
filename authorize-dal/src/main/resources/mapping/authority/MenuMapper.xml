@@ -96,6 +96,16 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
 
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    delete from tbl_menu
+    <where>
+      id IN
+      <foreach collection="ids.split(',')" item="id" separator="," open="(" close=")">
+        #{id,jdbcType=VARCHAR}
+      </foreach>
+    </where>
+  </delete>
+
   <delete id="delete" parameterType="com.ioc.authorize.model.authority.Menu">
     delete from tbl_menu
     <where>
